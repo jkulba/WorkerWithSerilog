@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "Kulba.Services.CayenneService": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
