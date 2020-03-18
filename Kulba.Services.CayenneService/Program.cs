@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
+using Kulba.Services.CayenneService.Models;
+using Kulba.Services.CayenneService.Services;
+
 namespace Kulba.Services.CayenneService
 {
     public class Program
@@ -49,7 +52,9 @@ namespace Kulba.Services.CayenneService
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
+                    services.Configure<SocketServerConfigInfo>(hostContext.Configuration.GetSection("SocketServerConfigInfo"));
+                    services.AddHostedService<GreetingHostedService>();
+                    //services.AddHostedService<Worker>();
                 })
                 .UseSerilog();
     }
