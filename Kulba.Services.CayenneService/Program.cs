@@ -17,11 +17,10 @@ namespace Kulba.Services.CayenneService
             var host = new HostBuilder()
                 .ConfigureAppConfiguration((hostContext, configApp) =>
                 {
-                    configApp.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                    configApp.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true);
                     configApp.AddEnvironmentVariables();
+                    configApp.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                    configApp.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production"}.json", optional: true);                    
                     configApp.AddCommandLine(args);
-
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
