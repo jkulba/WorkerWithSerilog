@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,8 +22,14 @@ namespace Kulba.Services.CayenneService.Services
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            var startTime = DateTimeOffset.Now;
-            _logger.ProgramStarting(startTime, 42);
+            using (_logger.BeginScope(
+                new Dictionary<string, object> {{"MessageId", 47}}))
+                {
+                    _logger.LogInformation("Batman");
+                    var startTime = DateTimeOffset.Now;
+                    _logger.ProgramStarting(startTime, 42);
+                }
+
             return base.StartAsync(cancellationToken);
         }
 
@@ -41,6 +48,7 @@ namespace Kulba.Services.CayenneService.Services
             while (!cancellationToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Greeting Service Says Hello Joe at: {time}", DateTime.Now);
+                _logger.LogWarning("Hey, this is a warning.");
                 await Task.Delay(1000, cancellationToken);
             }
         }

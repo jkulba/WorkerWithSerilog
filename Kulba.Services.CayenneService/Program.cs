@@ -18,8 +18,7 @@ namespace Kulba.Services.CayenneService
                 .ConfigureAppConfiguration((hostContext, configApp) =>
                 {
                     configApp.AddEnvironmentVariables();
-                    configApp.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                    configApp.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production"}.json", optional: true);                    
+                    configApp.AddJsonFile(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower() == "development" ? "appsettings.Development.json" : "appsettings.json");
                     configApp.AddCommandLine(args);
                 })
                 .ConfigureServices((hostContext, services) =>
@@ -30,6 +29,7 @@ namespace Kulba.Services.CayenneService
                     Log.Logger = new LoggerConfiguration()
                         .ReadFrom.Configuration(hostContext.Configuration)
                         .CreateLogger();
+                        
                     services.AddLogging(configure => configure.AddSerilog(Log.Logger));
 
                 })
